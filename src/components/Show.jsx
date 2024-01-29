@@ -22,7 +22,7 @@ const Show = () => {
         setProducts(
             data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
         )
-        console.log(products);
+        // console.log(products);
     }
     //4 - Funcion para eliminar un doc
     const deleteProduct = async (id) => {
@@ -32,6 +32,27 @@ const Show = () => {
     }
 
     //5 - Funcion de confirmacion para Sweet alert 2
+    const confirmDelete = (id) => {
+        MySwal.fire({
+            title: "Remove the product?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                //llamamos la funcion para eliminar
+                deleteProduct(id)
+                Swal.fire({
+                    title: "Deleted!",
+                    text: "Your file has been deleted.",
+                    icon: "success"
+                });
+            }
+        });
+    }
     //6 - usamos useEffect
     useEffect(() => {
         getProducts()
@@ -44,7 +65,7 @@ const Show = () => {
             <div className="container">
                 <div className="row">
                     <div className="col">
-                        <div className="d-grip gap-2">
+                        <div className="d-grid gap-2">
                             <Link to="/create" className='btn btn-secondary mt-2 mb-2 ' >Create</Link>
                         </div>
 
@@ -61,10 +82,10 @@ const Show = () => {
                                 {products.map((product) => (
                                     <tr key={product.id} >
                                         <td>{product.description}</td>
-                                        <td>{product.STOCK}</td>
+                                        <td>{product.stock}</td>
                                         <td>
                                             l<Link to={`/edit/${product}.id`} className='btn btn-light'><i className="fa-solid fa-pencil"></i></Link>
-                                            l<button onClick={() => { deleteProduct(product.id) }} className='btn btn-danger' ><i className="fa-solid fa-trash"></i></button>
+                                            l<button onClick={() => { confirmDelete(product.id) }} className='btn btn-danger' ><i className="fa-solid fa-trash"></i></button>
                                         </td>
                                     </tr>
                                 ))}
