@@ -14,7 +14,7 @@ const Create = () => {
     const store = async (e) => {
         e.preventDefault()
         await addDoc(productsCollection, { description: description, stock: stock })
-        navigate('/4')
+        navigate('/')
         // console.log(e.target[0].value);
     }
 
